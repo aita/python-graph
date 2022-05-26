@@ -95,3 +95,33 @@ def dsatur(graph: Graph[V], colors: list[C]) -> dict[V, C]:
         heapq.heapify(queue)
 
     return coloring
+
+
+def rlf(graph: Graph[V], colors: list[C]) -> dict[V, C]:
+    """
+    RLF algorithm for graph coloring.
+    """
+    coloring: dict[V, C] = {}
+
+    k = 0
+    G = graph.copy()
+    while not G.is_empty():
+        U = G.vertices()
+        v0 = max(U, key=lambda v: len(G.neighbors(v)))
+        S = {v0}
+        while True:
+            A = [x for x in U if all(y not in S for y in G.neighbors(x))]
+            if not A:
+                break
+            v = min(A, key=lambda x: len(G.neighbors(x) - S))
+            S.add(v)
+            U.remove(v)
+        for v in S:
+            G.remove_vertex(v)
+        if k >= len(colors):
+            raise ValueError("No coloring found")
+        for v in S:
+            coloring[v] = colors[k]
+        k += 1
+
+    return coloring

@@ -33,3 +33,21 @@ class TestGraph:
         g.add_edge("a", "b")
         assert g.neighbors("a") == {"b"}
         assert g.neighbors("b") == {"a"}
+
+    def test_remove_vertex(self):
+        g = self._makeOne()
+        g.add_vertex("a")
+        g.add_vertex("b")
+        g.add_edge("a", "b")
+        g.remove_vertex("a")
+        assert g.vertices() == ["b"]
+        assert g.edges() == set()
+
+    def test_copy(self):
+        g = self._makeOne()
+        g.add_vertex("a")
+        g.add_vertex("b")
+        g.add_edge("a", "b")
+        g2 = g.copy()
+        assert g2.vertices() == ["a", "b"]
+        assert g2.edges() == {("a", "b")}
