@@ -25,10 +25,11 @@ class Graph(Generic[Vertex]):
         }
 
     def neighbors(self, vertex: Vertex) -> set[Vertex]:
-        return self.adj[vertex]
+        return self.adj[vertex].copy()
 
     def add_vertex(self, vertex: Vertex) -> None:
-        self.adj[vertex] = set()
+        if vertex not in self.adj:
+            self.adj[vertex] = set()
 
     def add_edge(self, start: Vertex, end: Vertex) -> None:
         assert start != end
